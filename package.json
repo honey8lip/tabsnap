@@ -1,0 +1,21 @@
+{
+  "name": "tabsnap",
+  "version": "0.1.0",
+  "description": "CLI tool to save and restore browser tab sessions as JSON bookmarks",
+  "main": "src/index.js",
+  "bin": {
+    "tabsnap": "./bin/tabsnap.js"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": ["tabs", "browser", "bookmarks", "cli", "session"],
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "jest": "^29.0.0"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  }
+}
