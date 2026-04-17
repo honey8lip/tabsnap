@@ -27,7 +27,11 @@ function loadSession(name, dir = DEFAULT_DIR) {
     throw new Error(`Session "${name}" not found.`);
   }
   const raw = fs.readFileSync(filePath, 'utf-8');
-  return JSON.parse(raw);
+  try {
+    return JSON.parse(raw);
+  } catch (e) {
+    throw new Error(`Session "${name}" is corrupted and could not be parsed.`);
+  }
 }
 
 function listSessions(dir = DEFAULT_DIR) {
