@@ -26,6 +26,11 @@ async function main() {
   const filterIdx = args.indexOf('--filter');
   const filter = filterIdx !== -1 ? args[filterIdx + 1] : undefined;
 
+  if (filterIdx !== -1 && !filter) {
+    console.error('Error: --filter requires a keyword argument');
+    process.exit(1);
+  }
+
   try {
     console.log(`Restoring session "${command}"...`);
     const result = await restoreSession(command, { filter });
@@ -34,7 +39,11 @@ async function main() {
       console.log(`  Skipped ${result.skipped} tab(s) with no URL`);
     }
   } catch (err) {
-    console.error(`Error: ${err.message}`);
+    if (err.code === 'SESSION_NOT_FOUND') {
+      console.error(`Error: Session "${command}" not found. Run --list to see available sessions.`);
+    } else {
+      console.error(`Error: ${err.message}`);
+    }
     process.exit(1);
   }
 }
