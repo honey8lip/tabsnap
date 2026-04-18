@@ -27,6 +27,11 @@ test('searchTabs returns matching tabs by title', () => {
   expect(results).toHaveLength(1);
 });
 
+test('searchTabs is case-insensitive', () => {
+  expect(searchTabs(session1, 'GITHUB')).toHaveLength(1);
+  expect(searchTabs(session1, 'DoCs')).toHaveLength(1);
+});
+
 test('searchTabs returns empty when no match', () => {
   expect(searchTabs(session1, 'zzznomatch')).toHaveLength(0);
 });
@@ -40,6 +45,11 @@ test('searchSessions excludes sessions with no matches', () => {
   const results = searchSessions([session1, session2], 'hacker');
   expect(results).toHaveLength(1);
   expect(results[0].name).toBe('personal');
+});
+
+test('searchSessions returns empty array when no sessions match', () => {
+  const results = searchSessions([session1, session2], 'zzznomatch');
+  expect(results).toHaveLength(0);
 });
 
 test('formatSearchResults shows no results message', () => {
