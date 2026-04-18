@@ -61,4 +61,17 @@ export function formatSession(tabs, browser = 'unknown') {
   };
 }
 
+/**
+ * Returns a deduplicated list of tabs based on URL.
+ * If multiple tabs share the same URL, only the first occurrence is kept.
+ */
+export function deduplicateTabs(tabs) {
+  const seen = new Set();
+  return tabs.filter(tab => {
+    if (seen.has(tab.url)) return false;
+    seen.add(tab.url);
+    return true;
+  });
+}
+
 export { SUPPORTED_BROWSERS };
