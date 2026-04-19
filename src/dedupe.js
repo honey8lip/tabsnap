@@ -50,4 +50,14 @@ function dedupeAcrossSessions(sessions) {
   }));
 }
 
-module.exports = { dedupeTabs, findDuplicates, dedupeAcrossSessions };
+/**
+ * Returns the number of duplicate tabs in an array.
+ * Handy for displaying a quick summary without fetching the full dupes list.
+ * @param {Array} tabs
+ * @returns {number}
+ */
+function countDuplicates(tabs) {
+  return findDuplicates(tabs).length;
+}
+
+module.exports = { dedupeTabs, findDuplicates, dedupeAcrossSessions, countDuplicates };
