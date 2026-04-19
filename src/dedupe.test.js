@@ -27,6 +27,14 @@ describe('dedupeTabs', () => {
   test('returns empty array for empty input', () => {
     expect(dedupeTabs([])).toEqual([]);
   });
+
+  test('preserves title of first occurrence', () => {
+    const result = dedupeTabs(tabs);
+    const example = result.find(t => t.url === 'https://example.com');
+    expect(example.title).toBe('Example');
+    const foo = result.find(t => t.url === 'https://foo.com');
+    expect(foo.title).toBe('Foo');
+  });
 });
 
 describe('findDuplicates', () => {
@@ -52,5 +60,14 @@ describe('dedupeAcrossSessions', () => {
     expect(result[0].tabs).toHaveLength(2);
     expect(result[1].tabs).toHaveLength(1);
     expect(result[1].tabs[0].url).toBe('https://only-b.com');
+  });
+
+  test('does not mutate original sessions', () => {
+    const sessions = [
+      { name: 'a', tabs: [{ url: 'https://shared.com' }] },
+      { name: 'b', tabs: [{ url: 'https://shared.com' }, { url: 'https://only-b.com' }] },
+    ];
+    dedupeAcrossSessions(sessions);
+    expect(sessions[1].tabs).toHaveLength(2);
   });
 });
