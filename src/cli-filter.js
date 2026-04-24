@@ -14,6 +14,14 @@ function printUsage() {
   console.log('  --domain <host>     sessions containing domain');
 }
 
+function formatSessionLine(s) {
+  const tabCount = Array.isArray(s.tabs) ? s.tabs.length : 0;
+  const tabLabel = tabCount === 1 ? '1 tab' : `${tabCount} tabs`;
+  const browser = s.browser || 'unknown';
+  const date = s.savedAt ? new Date(s.savedAt).toLocaleString() : 'no date';
+  return `${s.name}  [${tabLabel}]  ${browser}  ${date}`;
+}
+
 async function main(argv) {
   const args = argv.slice(2);
   if (args.includes('--help') || args.includes('-h')) {
@@ -46,8 +54,7 @@ async function main(argv) {
     return;
   }
   for (const s of results) {
-    const tabCount = Array.isArray(s.tabs) ? s.tabs.length : 0;
-    console.log(`${s.name}  [${tabCount} tabs]  ${s.browser || 'unknown'}  ${s.savedAt || ''}`);
+    console.log(formatSessionLine(s));
   }
 }
 
