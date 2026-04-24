@@ -27,3 +27,15 @@ test('empty tag strings are ignored', () => {
   const s = addTags({ name: 'x', tabs: [] }, ['', '  ', 'valid']);
   expect(s.tags).toEqual(['valid']);
 });
+
+test('removeTags on non-existent tag leaves tags unchanged', () => {
+  let session = addTags({ name: 'test', tabs: [] }, ['alpha', 'beta']);
+  session = removeTags(session, ['gamma']);
+  expect(session.tags).toEqual(['alpha', 'beta']);
+});
+
+test('filterByTag returns empty array when no sessions match', () => {
+  const s1 = addTags({ name: 's1', tabs: [] }, ['work']);
+  const results = filterByTag([s1], 'personal');
+  expect(results).toEqual([]);
+});
