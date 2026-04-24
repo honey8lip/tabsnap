@@ -23,6 +23,12 @@ test('listAllTags reflects added tags', () => {
   expect(listAllTags([s1, s2])).toEqual(['bar', 'baz', 'foo']);
 });
 
+test('listAllTags returns empty array for sessions with no tags', () => {
+  const s1 = { name: 'a', tabs: [], tags: [] };
+  const s2 = { name: 'b', tabs: [], tags: [] };
+  expect(listAllTags([s1, s2])).toEqual([]);
+});
+
 test('empty tag strings are ignored', () => {
   const s = addTags({ name: 'x', tabs: [] }, ['', '  ', 'valid']);
   expect(s.tags).toEqual(['valid']);
@@ -38,4 +44,10 @@ test('filterByTag returns empty array when no sessions match', () => {
   const s1 = addTags({ name: 's1', tabs: [] }, ['work']);
   const results = filterByTag([s1], 'personal');
   expect(results).toEqual([]);
+});
+
+test('addTags does not add duplicate tags', () => {
+  let session = addTags({ name: 'test', tabs: [] }, ['alpha']);
+  session = addTags(session, ['alpha', 'beta']);
+  expect(session.tags).toEqual(['alpha', 'beta']);
 });
