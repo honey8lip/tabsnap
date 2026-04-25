@@ -4,6 +4,8 @@ import { exportSession } from './export.js';
 
 const args = process.argv.slice(2);
 
+const VALID_FORMATS = ['json', 'html', 'markdown'];
+
 function printUsage() {
   console.log('Usage: tabsnap export <session-name> [--format json|html|markdown] [--out file]');
   process.exit(1);
@@ -18,6 +20,10 @@ let outFile = null;
 for (let i = 1; i < args.length; i++) {
   if ((args[i] === '--format' || args[i] === '-f') && args[i + 1]) {
     format = args[++i];
+    if (!VALID_FORMATS.includes(format)) {
+      console.error(`Error: Invalid format "${format}". Must be one of: ${VALID_FORMATS.join(', ')}`);
+      process.exit(1);
+    }
   } else if ((args[i] === '--out' || args[i] === '-o') && args[i + 1]) {
     outFile = args[++i];
   } else {
