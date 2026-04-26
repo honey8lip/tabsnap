@@ -7,6 +7,13 @@ function printUsage() {
   console.log('  by: tag | date | browser');
 }
 
+function getGroups(by, sessions) {
+  if (by === 'tag') return groupByTag(sessions);
+  if (by === 'date') return groupByDate(sessions);
+  if (by === 'browser') return groupByBrowser(sessions);
+  return null;
+}
+
 async function main() {
   const args = process.argv.slice(2);
   const by = args[0];
@@ -23,11 +30,8 @@ async function main() {
     process.exit(0);
   }
 
-  let groups;
-  if (by === 'tag') groups = groupByTag(sessions);
-  else if (by === 'date') groups = groupByDate(sessions);
-  else if (by === 'browser') groups = groupByBrowser(sessions);
-  else {
+  const groups = getGroups(by, sessions);
+  if (!groups) {
     console.error(`Unknown grouping: ${by}`);
     printUsage();
     process.exit(1);
